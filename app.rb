@@ -28,16 +28,53 @@ class GeoTweeter < Sinatra::Base
   
   post '/update_status' do
     login_required
+    
     tweet = params['tweet']
     tweet.symbolize_keys!
     
     tweet[:lat]=tweet[:lat].to_f
     tweet[:long]=tweet[:long].to_f
-
-    user.update_status(tweet[:status], tweet )
-
-    session[:flash] = 'woot it worked!'
+    
+    begin
+      user.update_status(tweet[:status], tweet )
+      session[:flash] = 'woot it worked!'
+    rescue => e
+      puts e
+      session[:flash] = 'Error: guessing twitter was over capacity'
+    end
+    
     
     redirect '/'
   end
+  
+  get '/app.js' do
+<<JAVASCRIPT
+  function initialize() {
+    var latlng = new google.maps.LatLng(40.760082, -111.884841);
+    
+    var myOptions = {
+      zoom: 8,
+      center: latlng,
+      navigationControl: true,
+      scaleControl: true,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    
+    
+    google.maps.event.addListener(map, 'click', function (event) {
+      lat = event.latLng.lat();
+      lng = event.latLng.lng();
+      
+      lat_form = $($('form input[type=text]')[0])
+      long_form = $($('form input[type=text]')[1])
+      
+      lat_form.val(lat);
+      long_form.val(lng);
+    });
+  }
+
+JAVASCRIPT
+  end
+  
 end

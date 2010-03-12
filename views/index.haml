@@ -1,9 +1,17 @@
 - if session[:flash]
   %p= session[:flash]
   - session[:flash] = nil
+
 %form{:action => '/update_status', :method => :post}
   %p
+    Status
+  %p
     %textarea{:name=>'tweet[status]', :rows => 2, :cols => 40}
+  %p
+    click on the map to set the coords for the tweet.
+    
+  #map_canvas{ :style => "width:400px; height:200px"}
+
   %p
     %label Lat:
     %input{:type => :text, :name => 'tweet[lat]'}
@@ -11,3 +19,5 @@
     %label Long:
     %input{:type => :text, :name => 'tweet[long]'}
   %input{:type => :submit, :value => "Tweet"}
+%script{:type=>'text/javascript'}
+  initialize()
