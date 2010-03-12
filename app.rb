@@ -15,7 +15,8 @@ class GeoTweeter < Sinatra::Base
     set :twitter_oauth_config, 
       :key      =>ENV['TWITTER_OAUTH_KEY'],
       :secret   =>ENV['TWITTER_OAUTH_SECRET'],
-      :callback => ENV['TWITTER_OAUTH_CALLBACK']
+      :callback => ENV['TWITTER_OAUTH_CALLBACK'],
+      :login_template => {:text=>'<a href="/connect">Login using Twitter</a>'}
   end
   
   get '/' do
