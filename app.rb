@@ -6,6 +6,8 @@ require 'sinatra-twitter-oauth'
 class GeoTweeter < Sinatra::Base
   register Sinatra::TwitterOAuth
   
+  set :default_location, [40.760082, -111.884841] #SLC library
+  
   configure do
   
     enable :methodoverride
@@ -21,8 +23,14 @@ class GeoTweeter < Sinatra::Base
       :login_template => {:text=>'<a href="/connect">Login using Twitter</a>'}
   end
   
+  helpers do
+    def default_location
+      GeoTweeter.default_location
+    end
+  end
+  
   get '/' do
-    login_required
+    #login_required
     haml :index
   end
   
@@ -50,7 +58,7 @@ class GeoTweeter < Sinatra::Base
   get '/app.js' do
 <<JAVASCRIPT
   function initialize() {
-    var latlng = new google.maps.LatLng(40.760082, -111.884841);
+    var latlng = new google.maps.LatLng(#{default_location.join(',')});
     
     var myOptions = {
       zoom: 8,

@@ -14,10 +14,10 @@
 
   %p
     %label Lat:
-    %input{:type => :text, :name => 'tweet[lat]'}
+    %input{:type => :text, :name => 'tweet[lat]', :value => default_location[0]}
   %p
     %label Long:
-    %input{:type => :text, :name => 'tweet[long]'}
+    %input{:type => :text, :name => 'tweet[long]', :value => default_location[1]}
   %input{:type => :submit, :value => "Tweet"}
 %script{:type=>'text/javascript'}
   initialize()
