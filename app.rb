@@ -69,8 +69,14 @@ class GeoTweeter < Sinatra::Base
     };
     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     
-    
+    var marker = new google.maps.Marker({
+      position: latlng, 
+      map: map
+    });
+        
     google.maps.event.addListener(map, 'click', function (event) {
+      marker.setPosition(event.latLng);
+      
       lat = event.latLng.lat();
       lng = event.latLng.lng();
       
@@ -80,6 +86,8 @@ class GeoTweeter < Sinatra::Base
       lat_form.val(lat);
       long_form.val(lng);
     });
+    
+
   }
 
 JAVASCRIPT
