@@ -1,2 +1,4 @@
 twitter_oauth
-sinatra-twitter-oauth >= 0.0.2
+sinatra-twitter-oauth >= 0.0.3
+haml
+sinatra

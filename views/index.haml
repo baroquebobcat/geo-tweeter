@@ -1,3 +1,6 @@
+- if session[:flash]
+  %p= session[:flash]
+  - session[:flash] = nil
 %form{:action => '/update_status', :method => :post}
   %p
     %textarea{:name=>'tweet[status]', :rows => 2, :cols => 40}
