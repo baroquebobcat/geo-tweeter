@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'sinatra-twitter-oauth'
 
 class GeoTweeter < Sinatra::Base
   register Sinatra::TwitterOAuth
