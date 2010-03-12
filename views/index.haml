@@ -1,0 +1,10 @@
+%form{:action => '/update_status'}
+  %p
+    %textarea{:name=>'tweet[status]', :rows => 2, :cols => 40}
+  %p
+    %label Lat:
+    %input{:type => :text, :name => 'tweet[lat]'}
+  %p
+    %label Long:
+    %input{:type => :text, :name => 'tweet[long]'}
+  %input{:type => :submit, :value => "Tweet"}
