@@ -30,7 +30,7 @@ class GeoTweeter < Sinatra::Base
   end
   
   get '/' do
-    #login_required
+    login_required
     haml :index
   end
   
