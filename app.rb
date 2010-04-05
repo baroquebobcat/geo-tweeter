@@ -57,7 +57,13 @@ class GeoTweeter < Sinatra::Base
   
   get '/app.js' do
 <<JAVASCRIPT
+  var geocoder;
+  var map;
+  var marker;
+  
   function initialize() {
+    geocoder = new google.maps.Geocoder();
+    
     var latlng = new google.maps.LatLng(#{default_location.join(',')});
     
     var myOptions = {
@@ -67,9 +73,10 @@ class GeoTweeter < Sinatra::Base
       scaleControl: true,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     
-    var marker = new google.maps.Marker({
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    
+    marker = new google.maps.Marker({
       position: latlng, 
       map: map
     });
@@ -79,15 +86,38 @@ class GeoTweeter < Sinatra::Base
       
       lat = event.latLng.lat();
       lng = event.latLng.lng();
-      
-      lat_form = $($('form input[type=text]')[0])
-      long_form = $($('form input[type=text]')[1])
-      
-      lat_form.val(lat);
-      long_form.val(lng);
+      set_form(lat,lng);
+
     });
     
-
+    $("#submit_address").click(codeAddress)
+  }
+  
+  function set_form(lat,lng) {
+      lat_form = $('#tweet_lat')
+      long_form = $('#tweet_long')
+      
+      lat_form.val(lat);
+      long_form.val(lng);  
+  }
+  
+  function codeAddress(event) {
+    event.preventDefault();
+    var address = $("#address").val();
+    if (geocoder) {
+      geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          latLng = results[0].geometry.location
+          map.setCenter(latLng);
+          marker.setPosition(latLng)
+          set_form(latLng.lat(),latLng.lng())
+          
+        } else {
+          alert("Geocode was not successful for the following reason: " + status);
+        }
+      });
+    }
+    return false;
   }
 
 JAVASCRIPT
